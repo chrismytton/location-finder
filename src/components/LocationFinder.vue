@@ -194,6 +194,7 @@ export default {
 <style scoped>
 table {
   border: 1px solid #666;
+  width: 100%;
 }
 td {
   border: 1px solid #666;
