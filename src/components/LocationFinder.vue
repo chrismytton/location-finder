@@ -1,15 +1,41 @@
 <template>
   <div class="location-finder">
-    <div v-if="loading">Locating&hellip;</div>
-    <div v-else-if="errorMessage">{{ errorMessage }}</div>
-    <div v-else>
-      <p>Latitude: {{ latitude }}</p>
-      <p>Longitude: {{ longitude }}</p>
-      <p>Altitude: {{ altitude }}</p>
-      <p>Heading: {{ heading }}</p>
-      <p>Speed: {{ speed }}</p>
-      <p>Accuracy: {{ accuracy }}</p>
-      <p>Altitude Accuracy: {{ altitudeAccuracy }}</p>
+    <div v-if="locating">
+      Locating&hellip;
+    </div>
+    <div v-if="position">
+      <table>
+        <tr>
+          <td>Latitude</td>
+          <td>{{ latitude }}</td>
+        </tr>
+        <tr>
+          <td>Longitude</td>
+          <td>{{ longitude }}</td>
+        </tr>
+        <tr>
+          <td>Altitude</td>
+          <td>
+            <span v-if="altitude">{{ altitude }} metres</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Heading</td>
+          <td>{{ heading }}</td>
+        </tr>
+        <tr>
+          <td>Speed</td>
+          <td>{{ speed }}</td>
+        </tr>
+        <tr>
+          <td>Accuracy</td>
+          <td>{{ accuracy }}</td>
+        </tr>
+        <tr>
+          <td>Altitude Accuracy</td>
+          <td>{{ altitudeAccuracy }}</td>
+        </tr>
+      </table>
       <p>
         <a v-bind:href="`https://www.google.co.uk/maps/@${latitude},${longitude},17z`">Google Maps</a>
       </p>
@@ -22,6 +48,10 @@
         <a v-bind:href="`https://www.bing.com/maps?lvl=17&cp=${latitude}~${longitude}`">Bing</a>
       </p>
     </div>
+    <div v-else-if="errorMessage">{{ errorMessage }}</div>
+    <div v-else>
+      <button v-on:click="startTracking">Use my location</button>
+    </div>
   </div>
 </template>
 
@@ -30,26 +60,29 @@ export default {
   name: "LocationFinder",
   data() {
     return {
-      loading: true,
-      position: {},
-      error: {}
+      locating: false,
+      position: null,
+      error: {},
+      watchID: null,
     };
-  },
-  created() {
-    navigator.geolocation.watchPosition(
-      this.onPositionUpdate,
-      this.onPositionError,
-      { enableHighAccuracy: true }
-    );
   },
   methods: {
     onPositionUpdate(position) {
       this.position = position;
-      this.loading = false;
+      this.locating = false;
     },
     onPositionError(err) {
       this.error = err;
-      this.loading = false;
+      this.locating = false;
+    },
+    startTracking() {
+      this.locating = true
+      navigator.geolocation.clearWatch(this.watchID)
+      this.watchID = navigator.geolocation.watchPosition(
+        this.onPositionUpdate,
+        this.onPositionError,
+        { enableHighAccuracy: true }
+      );
     }
   },
   computed: {
@@ -60,19 +93,19 @@ export default {
       return this.position.coords.longitude.toFixed(4);
     },
     altitude() {
-      return this.position.coords.altitude;
+      return this.position.coords.altitude.toFixed(4);
     },
     heading() {
-      return this.position.coords.heading;
+      return this.position.coords.heading.toFixed(4);
     },
     speed() {
-      return this.position.coords.speed;
+      return this.position.coords.speed.toFixed(4);
     },
     accuracy() {
-      return this.position.coords.accuracy;
+      return this.position.coords.accuracy.toFixed(4);
     },
     altitudeAccuracy() {
-      return this.position.coords.altitudeAccuracy;
+      return this.position.coords.altitudeAccuracy.toFixed(4);
     },
     errorMessage() {
       if (!this.error.code || !this.error.message) {
@@ -86,4 +119,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+table {
+  border: 1px solid #666;
+}
+td {
+  border: 1px solid #666;
+  padding: 1em 0.5em;
+}
 </style>
