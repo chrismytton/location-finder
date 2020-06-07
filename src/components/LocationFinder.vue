@@ -166,19 +166,19 @@ export default {
       if (!this.coords.speed) {
         return
       }
-      return this.coords.speed * 2.237
+      return (this.coords.speed * 2.237).toFixed(1)
     },
     accuracy() {
       if (!this.coords.accuracy) {
         return
       }
-      return this.position.coords.accuracy
+      return this.position.coords.accuracy.toFixed(2)
     },
     altitudeAccuracy() {
       if (!this.coords.altitudeAccuracy) {
         return
       }
-      return this.position.coords.altitudeAccuracy;
+      return this.position.coords.altitudeAccuracy.toFixed(2);
     },
     errorMessage() {
       if (!this.error.code || !this.error.message) {
