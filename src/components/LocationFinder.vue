@@ -50,6 +50,10 @@
             <span v-if="altitudeAccuracy">+- {{ altitudeAccuracy }} metres</span>
           </td>
         </tr>
+        <tr>
+          <td>Last updated</td>
+          <td>{{ timestamp }}</td>
+        </tr>
       </table>
       <p>
         <a v-bind:href="`https://www.google.co.uk/maps/@${latitude},${longitude},17z`">Google Maps</a>
@@ -113,6 +117,12 @@ export default {
     }
   },
   computed: {
+    timestamp() {
+      if (!this.position) {
+        return;
+      }
+      return new Date(this.position.timestamp)
+    },
     latitude() {
       if (!this.coords.latitude) {
         return
@@ -158,13 +168,13 @@ export default {
     },
     speed() {
       if (!this.coords.speed) {
-        return
+        return "0"
       }
       return this.position.coords.speed.toFixed(1);
     },
     mph() {
       if (!this.coords.speed) {
-        return
+        return "0"
       }
       return (this.coords.speed * 2.237).toFixed(1)
     },
