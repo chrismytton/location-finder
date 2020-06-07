@@ -32,6 +32,12 @@
           </td>
         </tr>
         <tr>
+          <td>Speed (mph)</td>
+          <td>
+            <span v-if="mph">{{ mph }} mph</span>
+          </td>
+        </tr>
+        <tr>
           <td>Accuracy</td>
           <td>
             <span v-if="accuracy">+- {{ accuracy }} metres</span>
@@ -155,6 +161,12 @@ export default {
         return
       }
       return this.position.coords.speed.toFixed(1);
+    },
+    mph() {
+      if (!this.coords.speed) {
+        return
+      }
+      return this.coords.speed * 2.237
     },
     accuracy() {
       if (!this.coords.accuracy) {
