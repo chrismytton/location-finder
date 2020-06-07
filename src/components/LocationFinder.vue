@@ -128,7 +128,26 @@ export default {
       if (!this.coords.heading) {
         return
       }
-      return this.coords.heading.toFixed(0);
+      const { heading } = this.coords
+      if (heading > 337.5 || heading <= 22.5) {
+        return 'N'
+      } else if (heading > 22.5 && heading <= 67.5) {
+        return 'NE'
+      } else if (heading > 67.5 && heading <= 112.5) {
+        return 'E'
+      } else if (heading > 112.5 && heading <= 157.5) {
+        return 'SE'
+      } else if (heading > 157.5 && heading <= 202.5) {
+        return 'S'
+      } else if (heading > 202.5 && heading <= 247.5) {
+        return 'SW'
+      } else if (heading > 247.5 && heading <= 292.5) {
+        return 'W'
+      } else if (heading > 292.5 && heading <= 337.5) {
+        return 'NW'
+      } else {
+        return heading
+      }
     },
     speed() {
       if (!this.coords.speed) {
