@@ -101,7 +101,8 @@ export default {
       }
       this.watchID = navigator.geolocation.watchPosition(
         this.onPositionUpdate,
-        this.onPositionError
+        this.onPositionError,
+        { enableHighAccuracy: true }
       );
     }
   },
