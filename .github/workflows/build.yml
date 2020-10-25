@@ -2,8 +2,6 @@ name: Deploy
 
 on:
   push:
-  schedule:
-  - cron: '15 5 * * 0'
 
 jobs:
   build:
