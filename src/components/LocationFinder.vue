@@ -12,9 +12,6 @@ export default {
     };
   },
   created() {
-    if (localStorage.getItem('gpsSuccess')) {
-      this.startTracking()
-    }
     setInterval(() => {
       this.now = Date.now()
     }, 1000)
@@ -22,14 +19,11 @@ export default {
   methods: {
 
     onPositionUpdate(position) {
-      localStorage.setItem('gpsSuccess', true)
-
       this.position = position;
       this.coords = position.coords
       this.locating = false;
     },
     onPositionError(err) {
-      localStorage.setItem('gpsSuccess', false)
       this.error = err;
       this.locating = false;
     },
