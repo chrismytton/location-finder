@@ -152,10 +152,6 @@ export default {
         geometry: {
           type: "Point",
           coordinates: [this.longitude, this.latitude]
-        },
-        properties: {
-          timestamp: this.timestamp,
-          altitude: this.altitude,
         }
       }
     },
