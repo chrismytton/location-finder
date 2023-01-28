@@ -90,10 +90,16 @@ export default {
       return this.coords.altitude.toFixed(2);
     },
     heading() {
-      if (!this.coords.heading) {
-        return 'Unknown'
-      }
       const { heading } = this.coords
+      if (!heading) {
+        return '&nbsp;'
+      }
+
+      // Santiy check
+      if (heading < 0 || heading > 360) {
+        throw new Error('Invalid heading')
+      }
+
       if (heading > 337.5 || heading <= 22.5) {
         return 'North'
       } else if (heading > 22.5 && heading <= 67.5) {
@@ -110,8 +116,6 @@ export default {
         return 'West'
       } else if (heading > 292.5 && heading <= 337.5) {
         return 'North-West'
-      } else {
-        throw new Error('Invalid heading')
       }
     },
     speed() {
@@ -196,7 +200,7 @@ export default {
         <span class="text-3xl" v-bind:title="locationAccuracy">{{ longitude }}</span>
       </div>
       <div @click="copy(altitude)" v-if="altitude" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Altitude</span> <span class="text-3xl mb-3">{{ altitude }} meters</span><span>+-{{ altitudeAccuracy }} meters</span></div>
-      <div @click="copy(heading)" v-if="heading" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Heading</span> <span class="text-3xl">{{ heading }}</span></div>
+      <div @click="copy(heading)" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Heading</span> <span class="text-3xl" v-html="heading"></span></div>
       <div @click="copy(mph)" v-if="mph" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Miles per hour</span> <span class="text-3xl">{{ mph }} mph</span></div>
       <div @click="copy(kph)" v-if="kph" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Kilometers per hour</span> <span class="text-3xl">{{ kph }} km/h</span></div>
       <div @click="copy(speed)" v-if="speed" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Meters per second</span> <span class="text-3xl">{{ speed }} m/s</span></div>
