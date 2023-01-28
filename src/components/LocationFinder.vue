@@ -103,13 +103,13 @@ export default {
     },
     speed() {
       if (!this.coords.speed) {
-        return null
+        return "0"
       }
       return this.coords.speed.toFixed(1);
     },
     mph() {
       if (!this.coords.speed) {
-        return null
+        return "0"
       }
       return (this.coords.speed * 2.237).toFixed(1)
     },
