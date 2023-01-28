@@ -130,7 +130,7 @@ export default {
     <div v-if="locating" class="grid justify-center content-center h-screen text-3xl font-bold">
       Locating&hellip;
     </div>
-    <div v-else-if="position" class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+    <div v-else-if="position" class="grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
       <div v-if="latitude" class="flex flex-col text-center p-5 border m-5 justify-center"><span class="text-xl mb-3">Latitude</span> <span class="text-3xl">{{ latitude }}</span></div>
       <div v-if="longitude" class="flex flex-col text-center p-5 border m-5 justify-center"><span class="text-xl mb-3">Longitude</span> <span class="text-3xl">{{ longitude }}</span></div>
       <div v-if="altitude" class="flex flex-col text-center p-5 border m-5 justify-center"><span class="text-xl mb-3">Altitude</span> <span class="text-3xl">{{ altitude }} metres</span></div>
