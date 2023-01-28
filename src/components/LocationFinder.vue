@@ -95,7 +95,7 @@ export default {
       if (!this.coords.speed) {
         return null
       }
-      return this.position.coords.speed.toFixed(1);
+      return this.coords.speed.toFixed(1);
     },
     mph() {
       if (!this.coords.speed) {
@@ -107,13 +107,13 @@ export default {
       if (!this.coords.accuracy) {
         return
       }
-      return this.position.coords.accuracy.toFixed(2)
+      return this.coords.accuracy.toFixed(2)
     },
     altitudeAccuracy() {
       if (!this.coords.altitudeAccuracy) {
         return
       }
-      return this.position.coords.altitudeAccuracy.toFixed(2);
+      return this.coords.altitudeAccuracy.toFixed(2);
     },
     errorMessage() {
       if (!this.error.code || !this.error.message) {
