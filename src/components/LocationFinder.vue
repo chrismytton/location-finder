@@ -192,6 +192,7 @@ export default {
       <div v-if="altitude" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">WKT</span> <pre class="overflow-x-scroll shadow-inner p-3">{{ wktWithAltitude }}</pre></div>
       <div v-else class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">WKT</span> <pre class="overflow-x-scroll shadow-inner p-3">{{ wkt }}</pre></div>
       <div class="flex flex-col text-center p-5 border justify-center">
+        <span class="text-xl mb-3">Maps</span>
         <a class="p-4 bg-blue-500 text-zinc-50 my-3 text-xl font-semibold" v-bind:href="`https://www.google.co.uk/maps/@${latitude},${longitude},17z`" target="_blank">Google Maps</a>
         <a class="p-4 bg-blue-500 text-zinc-50 my-3 text-xl font-semibold" v-bind:href="`https://www.openstreetmap.org/#map=17/${latitude}/${longitude}`" target="_blank">OpenStreetMap</a>
         <a class="p-4 bg-blue-500 text-zinc-50 my-3 text-xl font-semibold" v-bind:href="`https://www.bing.com/maps?lvl=17&cp=${latitude}~${longitude}`" target="_blank">Bing</a>
