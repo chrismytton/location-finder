@@ -1,60 +1,18 @@
 <template>
-  <div class="location-finder">
+  <div class="grid justify-center content-center h-screen font-mono m-5">
     <div v-if="locating">
       Locating&hellip;
     </div>
-    <div v-else-if="position">
-      <table>
-        <tr>
-          <td>Latitude</td>
-          <td>{{ latitude }}</td>
-        </tr>
-        <tr>
-          <td>Longitude</td>
-          <td>{{ longitude }}</td>
-        </tr>
-        <tr>
-          <td>Altitude</td>
-          <td>
-            <span v-if="altitude">{{ altitude }} metres</span>
-          </td>
-        </tr>
-        <tr>
-          <td>Heading</td>
-          <td>
-            <span v-if="heading">{{ heading }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td>Speed</td>
-          <td>
-            <span v-if="speed">{{ speed }} metres per second</span>
-          </td>
-        </tr>
-        <tr>
-          <td>Speed (mph)</td>
-          <td>
-            <span v-if="mph">{{ mph }} mph</span>
-          </td>
-        </tr>
-        <tr>
-          <td>Accuracy</td>
-          <td>
-            <span v-if="accuracy">+- {{ accuracy }} metres</span>
-          </td>
-        </tr>
-        <tr>
-          <td>Altitude Accuracy</td>
-
-          <td>
-            <span v-if="altitudeAccuracy">+- {{ altitudeAccuracy }} metres</span>
-          </td>
-        </tr>
-        <tr>
-          <td>Last updated</td>
-          <td>{{ timestamp }}</td>
-        </tr>
-      </table>
+    <div v-else-if="position" class="grid grid-">
+      <div>Latitude: {{ latitude }}</div>
+      <div>Longitude: {{ longitude }}</div>
+      <div>Altitude: <span v-if="altitude">{{ altitude }} metres</span></div>
+      <div>Heading: <span v-if="heading">{{ heading }}</span></div>
+      <div>Speed: <span v-if="speed">{{ speed }} metres per second</span></div>
+      <div>Speed (mph): <span v-if="mph">{{ mph }} mph</span></div>
+      <div>Accuracy: <span v-if="accuracy">+- {{ accuracy }} metres</span></div>
+      <div>Altitude Accuracy: <span v-if="altitudeAccuracy">+- {{ altitudeAccuracy }} metres</span></div>
+      <div>Last updated: {{ timestamp }}</div>
       <p>
         <a v-bind:href="`https://www.google.co.uk/maps/@${latitude},${longitude},17z`">Google Maps</a>
       </p>
@@ -69,7 +27,7 @@
     </div>
     <div v-else-if="errorMessage">{{ errorMessage }}</div>
     <div v-else>
-      <button v-on:click="startTracking">Use my location</button>
+      <button v-on:click="startTracking" class="bg-blue-500 text-zinc-50 p-4 font-semibold text-2xl">Use my location</button>
     </div>
   </div>
 </template>
@@ -101,6 +59,7 @@ export default {
       this.locating = false;
     },
     onPositionError(err) {
+      localStorage.setItem('gpsSuccess', false)
       this.error = err;
       this.locating = false;
     },
@@ -199,15 +158,3 @@ export default {
   }
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-table {
-  border: 1px solid #666;
-  width: 100%;
-}
-td {
-  border: 1px solid #666;
-  padding: 1em 0.5em;
-}
-</style>
