@@ -60,7 +60,7 @@
       </p>
       <p>
         <a
-          v-bind:href="`https://www.openstreetmap.org/search?query=${latitude}%2C${longitude}`"
+          v-bind:href="`https://www.openstreetmap.org/#map=17/${latitude}/${longitude}`"
         >OpenStreetMap</a>
       </p>
       <p>
