@@ -147,7 +147,7 @@ export default {
       </div>
     </div>
     <div v-else-if="errorMessage">{{ errorMessage }}</div>
-    <div v-else>
+    <div v-else class="grid justify-center content-center h-screen">
       <button v-on:click="startTracking" class="bg-blue-500 text-zinc-50 p-4 font-semibold text-2xl">Use my location</button>
     </div>
   </div>
