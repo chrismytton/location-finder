@@ -142,7 +142,42 @@ export default {
         return "";
       }
       return `ERROR(${this.error.code}): ${this.error.message}`;
-    }
+    },
+    geoJSON() {
+      if (!this.position) {
+        return
+      }
+      return {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: [this.coords.longitude, this.coords.latitude]
+        },
+        properties: {
+          timestamp: this.timestamp,
+          relativeTimestamp: this.relativeTimestamp,
+          altitude: this.altitude,
+          heading: this.heading,
+          speed: this.speed,
+          accuracy: this.accuracy,
+          altitudeAccuracy: this.altitudeAccuracy,
+          locationAccuracy: this.locationAccuracy,
+          errorMessage: this.errorMessage
+        }
+      }
+    },
+    wkt() {
+      if (!this.position) {
+        return
+      }
+      return `POINT(${this.coords.longitude} ${this.coords.latitude})`
+    },
+    wktWithAltitude() {
+      if (!this.position) {
+        return
+      }
+      return `POINT(${this.coords.longitude} ${this.coords.latitude} ${this.altitude})`
+    },
   }
 };
 </script>
@@ -167,6 +202,9 @@ export default {
       <div v-if="mph" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Kilometers per hour</span> <span class="text-3xl">{{ kph }} km/h</span></div>
       <div v-if="speed" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Meters per second</span> <span class="text-3xl">{{ speed }} m/s</span></div>
       <div v-if="timestamp" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Last updated</span> <span class="text-3xl" v-bind:title="timestamp">{{ relativeTimestamp }} seconds ago</span></div>
+      <div v-if="geoJSON" class="flex flex-col p-5 border justify-center"><span class="text-xl mb-3 text-center">GeoJSON</span> <pre class="overflow-x-auto">{{ geoJSON }}</pre></div>
+      <div v-if="wkt" class="flex flex-col p-5 border justify-center"><span class="text-xl mb-3 text-center">WKT</span> <pre class="overflow-x-auto">{{ wkt }}</pre></div>
+      <div v-if="altitude" class="flex flex-col p-5 border justify-center"><span class="text-xl mb-3 text-center">WKT</span> <pre class="overflow-x-auto">{{ wktWithAltitude }}</pre></div>
       <div class="flex flex-col text-center p-5 border justify-center">
         <a class="p-4 bg-blue-500 text-zinc-50 my-3 text-xl font-semibold" v-bind:href="`https://www.google.co.uk/maps/@${latitude},${longitude},17z`" target="_blank">Google Maps</a>
         <a class="p-4 bg-blue-500 text-zinc-50 my-3 text-xl font-semibold" v-bind:href="`https://www.openstreetmap.org/#map=17/${latitude}/${longitude}`" target="_blank">OpenStreetMap</a>
