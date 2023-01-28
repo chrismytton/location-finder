@@ -151,7 +151,7 @@ export default {
         type: "Feature",
         geometry: {
           type: "Point",
-          coordinates: [this.coords.longitude, this.coords.latitude]
+          coordinates: [this.longitude, this.latitude]
         },
         properties: {
           timestamp: this.timestamp,
@@ -170,13 +170,13 @@ export default {
       if (!this.position) {
         return
       }
-      return `POINT(${this.coords.longitude} ${this.coords.latitude})`
+      return `POINT(${this.longitude} ${this.latitude})`
     },
     wktWithAltitude() {
       if (!this.position) {
         return
       }
-      return `POINT(${this.coords.longitude} ${this.coords.latitude} ${this.altitude})`
+      return `POINT(${this.longitude} ${this.latitude} ${this.altitude})`
     },
   }
 };
