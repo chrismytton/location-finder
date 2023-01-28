@@ -1,6 +1,6 @@
 # location-finder
 
-This template should help get you started developing with Vue 3 in Vite.
+Get your current latitude, longitude and altitude. Uses the Geolocation API to display a readout of your current position and renders it on a minimal webpage.
 
 ## Recommended IDE Setup
 
