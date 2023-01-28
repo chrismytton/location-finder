@@ -153,8 +153,14 @@ export default {
       Locating&hellip;
     </div>
     <div v-else-if="position" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
-      <div v-if="latitude" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Latitude</span> <span class="text-3xl mb-3" v-bind:title="locationAccuracy">{{ latitude }}</span></div>
-      <div v-if="longitude" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Longitude</span> <span class="text-3xl mb-3" v-bind:title="locationAccuracy">{{ longitude }}</span><span></span></div>
+      <div v-if="latitude" class="flex flex-col gap-3 text-center p-5 border justify-center">
+        <span class="text-xl">Latitude</span>
+        <span class="text-3xl" v-bind:title="locationAccuracy">{{ latitude }}</span>
+      </div>
+      <div v-if="longitude" class="flex flex-col gap-3 text-center p-5 border justify-center">
+        <span class="text-xl">Longitude</span>
+        <span class="text-3xl" v-bind:title="locationAccuracy">{{ longitude }}</span>
+      </div>
       <div v-if="altitude" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Altitude</span> <span class="text-3xl mb-3">{{ altitude }} meters</span><span>+-{{ altitudeAccuracy }} meters</span></div>
       <div v-if="heading" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Heading</span> <span class="text-3xl">{{ heading }}</span></div>
       <div v-if="mph" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Miles per hour</span> <span class="text-3xl">{{ mph }} mph</span></div>
