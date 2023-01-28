@@ -78,27 +78,27 @@ export default {
     },
     heading() {
       if (!this.coords.heading) {
-        return
+        return 'Unknown'
       }
       const { heading } = this.coords
       if (heading > 337.5 || heading <= 22.5) {
-        return 'N'
+        return 'North'
       } else if (heading > 22.5 && heading <= 67.5) {
-        return 'NE'
+        return 'North-East'
       } else if (heading > 67.5 && heading <= 112.5) {
-        return 'E'
+        return 'East'
       } else if (heading > 112.5 && heading <= 157.5) {
-        return 'SE'
+        return 'South-East'
       } else if (heading > 157.5 && heading <= 202.5) {
-        return 'S'
+        return 'South'
       } else if (heading > 202.5 && heading <= 247.5) {
-        return 'SW'
+        return 'South-West'
       } else if (heading > 247.5 && heading <= 292.5) {
-        return 'W'
+        return 'West'
       } else if (heading > 292.5 && heading <= 337.5) {
-        return 'NW'
+        return 'North-West'
       } else {
-        return heading
+        throw new Error('Invalid heading')
       }
     },
     speed() {
@@ -113,6 +113,12 @@ export default {
       }
       return (this.coords.speed * 2.237).toFixed(1)
     },
+    kph() {
+      if (!this.coords.speed) {
+        return "0"
+      }
+      return (this.coords.speed * 3.6).toFixed(1)
+    },
     accuracy() {
       if (!this.coords.accuracy) {
         return
@@ -124,6 +130,12 @@ export default {
         return
       }
       return this.coords.altitudeAccuracy.toFixed(2);
+    },
+    locationAccuracy() {
+      if (!this.accuracy) {
+        return
+      }
+      return `+- ${ this.accuracy } meters`
     },
     errorMessage() {
       if (!this.error.code || !this.error.message) {
@@ -141,12 +153,13 @@ export default {
       Locating&hellip;
     </div>
     <div v-else-if="position" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
-      <div v-if="latitude" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Latitude</span> <span class="text-3xl mb-3">{{ latitude }}</span><span>+- {{ Math.ceil(accuracy) }} meters</span></div>
-      <div v-if="longitude" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Longitude</span> <span class="text-3xl mb-3">{{ longitude }}</span><span>+- {{ Math.ceil(accuracy) }} meters</span></div>
-      <div v-if="altitude" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Altitude</span> <span class="text-3xl mb-3">{{ altitude }} meters</span><span>{{ altitudeAccuracy }} meters</span></div>
+      <div v-if="latitude" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Latitude</span> <span class="text-3xl mb-3" v-bind:title="locationAccuracy">{{ latitude }}</span></div>
+      <div v-if="longitude" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Longitude</span> <span class="text-3xl mb-3" v-bind:title="locationAccuracy">{{ longitude }}</span><span></span></div>
+      <div v-if="altitude" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Altitude</span> <span class="text-3xl mb-3">{{ altitude }} meters</span><span>+= {{ altitudeAccuracy }} meters</span></div>
       <div v-if="heading" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Heading</span> <span class="text-3xl">{{ heading }}</span></div>
-      <div v-if="mph" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Speed</span> <span class="text-3xl">{{ mph }} mph</span></div>
-      <div v-if="speed" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Meters per second</span> <span class="text-3xl">{{ speed }}</span></div>
+      <div v-if="mph" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Miles per hour</span> <span class="text-3xl">{{ mph }} mph</span></div>
+      <div v-if="mph" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Kilometers per hour</span> <span class="text-3xl">{{ kph }} km/h</span></div>
+      <div v-if="speed" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Meters per second</span> <span class="text-3xl">{{ speed }} m/s</span></div>
       <div v-if="timestamp" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Last updated</span> <span class="text-3xl" v-bind:title="timestamp">{{ relativeTimestamp }} seconds ago</span></div>
       <div class="flex flex-col text-center p-5 border justify-center">
         <a class="p-4 bg-blue-500 text-zinc-50 my-3 text-xl font-semibold" v-bind:href="`https://www.google.co.uk/maps/@${latitude},${longitude},17z`" target="_blank">Google Maps</a>
