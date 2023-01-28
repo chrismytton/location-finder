@@ -177,10 +177,7 @@ export default {
 
 <template>
   <div class="m-5">
-    <div v-if="locating" class="grid justify-center content-center h-screen text-3xl font-bold">
-      Locating&hellip;
-    </div>
-    <div v-else-if="position" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
+    <div v-if="position" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
       <div v-if="latitude" class="flex flex-col gap-3 text-center p-5 border justify-center">
         <span class="text-xl">Latitude</span>
         <span class="text-3xl" v-bind:title="locationAccuracy">{{ latitude }}</span>
@@ -196,13 +193,16 @@ export default {
       <div v-if="speed" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Meters per second</span> <span class="text-3xl">{{ speed }} m/s</span></div>
       <div v-if="timestamp" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Last updated</span> <span class="text-3xl" v-bind:title="timestamp">{{ relativeTimestamp }} seconds ago</span></div>
       <div v-if="geoJSON" class="flex flex-col p-5 border justify-center"><span class="text-xl mb-3 text-center">GeoJSON</span> <pre class="overflow-x-scroll shadow-inner p-3">{{ geoJSON }}</pre></div>
-      <div v-if="altitude" class="flex flex-col text-center p-5 border justify-center overflow-x-scroll"><span class="text-xl mb-3">WKT</span> <pre class="overflow-x-scroll shadow-inner p-3">{{ wktWithAltitude }}</pre></div>
-      <div v-else class="flex flex-col text-center p-5 border justify-center overflow-x-scroll"><span class="text-xl mb-3">WKT</span> <pre class="overflow-x-scroll shadow-inner p-3">{{ wkt }}</pre></div>
+      <div v-if="altitude" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">WKT</span> <pre class="overflow-x-scroll shadow-inner p-3">{{ wktWithAltitude }}</pre></div>
+      <div v-else class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">WKT</span> <pre class="overflow-x-scroll shadow-inner p-3">{{ wkt }}</pre></div>
       <div class="flex flex-col text-center p-5 border justify-center">
         <a class="p-4 bg-blue-500 text-zinc-50 my-3 text-xl font-semibold" v-bind:href="`https://www.google.co.uk/maps/@${latitude},${longitude},17z`" target="_blank">Google Maps</a>
         <a class="p-4 bg-blue-500 text-zinc-50 my-3 text-xl font-semibold" v-bind:href="`https://www.openstreetmap.org/#map=17/${latitude}/${longitude}`" target="_blank">OpenStreetMap</a>
         <a class="p-4 bg-blue-500 text-zinc-50 my-3 text-xl font-semibold" v-bind:href="`https://www.bing.com/maps?lvl=17&cp=${latitude}~${longitude}`" target="_blank">Bing</a>
       </div>
+    </div>
+    <div v-else-if="locating" class="grid justify-center content-center h-screen text-3xl font-bold">
+      Locating&hellip;
     </div>
     <div v-else-if="errorMessage">{{ errorMessage }}</div>
     <div v-else class="grid justify-center content-center h-screen">
