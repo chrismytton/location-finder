@@ -45,17 +45,39 @@ export default {
       );
     },
     copy(value) {
+      if (!navigator.clipboard) {
+        this.displayConfirmation('Copy not supported', { background: 'bg-red-500' })
+        return
+      }
+      if (value === undefined || value === null || value === '' || value === '&nbsp;') {
+        this.displayConfirmation('Nothing to copy', { background: 'bg-red-500' })
+        return
+      }
       navigator.clipboard.writeText(value)
       this.displayConfirmation()
     },
-    displayConfirmation(message) {
+    displayConfirmation(message, { background = 'bg-green-500', duration = 2000 } = {}) {
       const el = document.createElement('div')
-      el.classList.add('fixed', 'top-0', 'left-0', 'right-0', 'mx-auto', 'w-1/2', 'bg-green-500', 'text-white', 'text-center', 'rounded', 'p-2', 'z-50', 'mt-3')
+      el.classList.add(
+        background,
+        'fixed',
+        'top-0',
+        'left-0',
+        'right-0',
+        'mx-auto',
+        'w-1/2',
+        'text-white',
+        'text-center',
+        'rounded',
+        'p-2',
+        'z-50',
+        'mt-3'
+      )
       el.innerText = message || 'Copied to clipboard'
       document.body.appendChild(el)
       setTimeout(() => {
         document.body.removeChild(el)
-      }, 2000)
+      }, duration)
     },
   },
   computed: {
