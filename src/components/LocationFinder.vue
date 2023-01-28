@@ -1,37 +1,3 @@
-<template>
-  <div class="grid justify-center content-center h-screen font-mono m-5">
-    <div v-if="locating">
-      Locating&hellip;
-    </div>
-    <div v-else-if="position" class="grid grid-">
-      <div>Latitude: {{ latitude }}</div>
-      <div>Longitude: {{ longitude }}</div>
-      <div>Altitude: <span v-if="altitude">{{ altitude }} metres</span></div>
-      <div>Heading: <span v-if="heading">{{ heading }}</span></div>
-      <div>Speed: <span v-if="speed">{{ speed }} metres per second</span></div>
-      <div>Speed (mph): <span v-if="mph">{{ mph }} mph</span></div>
-      <div>Accuracy: <span v-if="accuracy">+- {{ accuracy }} metres</span></div>
-      <div>Altitude Accuracy: <span v-if="altitudeAccuracy">+- {{ altitudeAccuracy }} metres</span></div>
-      <div>Last updated: {{ timestamp }}</div>
-      <p>
-        <a v-bind:href="`https://www.google.co.uk/maps/@${latitude},${longitude},17z`">Google Maps</a>
-      </p>
-      <p>
-        <a
-          v-bind:href="`https://www.openstreetmap.org/#map=17/${latitude}/${longitude}`"
-        >OpenStreetMap</a>
-      </p>
-      <p>
-        <a v-bind:href="`https://www.bing.com/maps?lvl=17&cp=${latitude}~${longitude}`">Bing</a>
-      </p>
-    </div>
-    <div v-else-if="errorMessage">{{ errorMessage }}</div>
-    <div v-else>
-      <button v-on:click="startTracking" class="bg-blue-500 text-zinc-50 p-4 font-semibold text-2xl">Use my location</button>
-    </div>
-  </div>
-</template>
-
 <script>
 export default {
   name: "LocationFinder",
@@ -158,3 +124,37 @@ export default {
   }
 };
 </script>
+
+<template>
+  <div class="grid justify-center content-center h-screen font-mono m-5">
+    <div v-if="locating">
+      Locating&hellip;
+    </div>
+    <div v-else-if="position" class="grid grid-">
+      <div>Latitude: {{ latitude }}</div>
+      <div>Longitude: {{ longitude }}</div>
+      <div>Altitude: <span v-if="altitude">{{ altitude }} metres</span></div>
+      <div>Heading: <span v-if="heading">{{ heading }}</span></div>
+      <div>Speed: <span v-if="speed">{{ speed }} metres per second</span></div>
+      <div>Speed (mph): <span v-if="mph">{{ mph }} mph</span></div>
+      <div>Accuracy: <span v-if="accuracy">+- {{ accuracy }} metres</span></div>
+      <div>Altitude Accuracy: <span v-if="altitudeAccuracy">+- {{ altitudeAccuracy }} metres</span></div>
+      <div>Last updated: {{ timestamp }}</div>
+      <p>
+        <a v-bind:href="`https://www.google.co.uk/maps/@${latitude},${longitude},17z`">Google Maps</a>
+      </p>
+      <p>
+        <a
+          v-bind:href="`https://www.openstreetmap.org/#map=17/${latitude}/${longitude}`"
+        >OpenStreetMap</a>
+      </p>
+      <p>
+        <a v-bind:href="`https://www.bing.com/maps?lvl=17&cp=${latitude}~${longitude}`">Bing</a>
+      </p>
+    </div>
+    <div v-else-if="errorMessage">{{ errorMessage }}</div>
+    <div v-else>
+      <button v-on:click="startTracking" class="bg-blue-500 text-zinc-50 p-4 font-semibold text-2xl">Use my location</button>
+    </div>
+  </div>
+</template>
