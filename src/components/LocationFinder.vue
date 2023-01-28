@@ -173,7 +173,7 @@ export default {
 
 <template>
   <div class="m-5">
-    <div v-if="position" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
+    <div v-if="position" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 min-w-0">
       <div v-if="latitude" class="flex flex-col gap-3 text-center p-5 border justify-center">
         <span class="text-xl">Latitude</span>
         <span class="text-3xl" v-bind:title="locationAccuracy">{{ latitude }}</span>
@@ -188,7 +188,7 @@ export default {
       <div v-if="mph" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Kilometers per hour</span> <span class="text-3xl">{{ kph }} km/h</span></div>
       <div v-if="speed" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Meters per second</span> <span class="text-3xl">{{ speed }} m/s</span></div>
       <div v-if="timestamp" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Last updated</span> <span class="text-3xl" v-bind:title="timestamp">{{ relativeTimestamp }} seconds ago</span></div>
-      <div v-if="geoJSON" class="flex flex-col p-5 border justify-center min-w-0"><span class="text-xl mb-3 text-center">GeoJSON</span> <pre class="overflow-x-scroll shadow-inner p-3">{{ geoJSON }}</pre></div>
+      <div v-if="geoJSON" class="flex flex-col p-5 border justify-center"><span class="text-xl mb-3 text-center">GeoJSON</span> <pre class="overflow-x-scroll shadow-inner p-3">{{ geoJSON }}</pre></div>
       <div v-if="altitude" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">WKT</span> <pre class="overflow-x-scroll shadow-inner p-3">{{ wktWithAltitude }}</pre></div>
       <div v-else class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">WKT</span> <pre class="overflow-x-scroll shadow-inner p-3">{{ wkt }}</pre></div>
       <div class="flex flex-col text-center p-5 border justify-center">
