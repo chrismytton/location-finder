@@ -8,12 +8,16 @@ export default {
       coords: {},
       error: {},
       watchID: null,
+      now: Date.now()
     };
   },
   created() {
     if (localStorage.getItem('gpsSuccess')) {
       this.startTracking()
     }
+    setInterval(() => {
+      this.now = Date.now()
+    }, 1000)
   },
   methods: {
 
@@ -47,6 +51,12 @@ export default {
         return;
       }
       return new Date(this.position.timestamp)
+    },
+    relativeTimestamp() {
+      if (!this.position) {
+        return;
+      }
+      return Math.ceil((this.now - this.timestamp.getTime()) / 1000)
     },
     latitude() {
       if (!this.coords.latitude) {
@@ -139,7 +149,7 @@ export default {
       <div v-if="mph" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Speed (mph)</span> <span class="text-3xl">{{ mph }} mph</span></div>
       <div v-if="accuracy" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Accuracy</span> <span class="text-3xl">+- {{ accuracy }} metres</span></div>
       <div v-if="altitudeAccuracy" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Altitude Accuracy</span> <span class="text-3xl">+- {{ altitudeAccuracy }} metres</span></div>
-      <div v-if="timestamp" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Last updated</span> <span class="text-3xl">{{ timestamp }}</span></div>
+      <div v-if="timestamp" class="flex flex-col text-center p-5 border justify-center"><span class="text-xl mb-3">Last updated</span> <span class="text-3xl" v-bind:title="timestamp">{{ relativeTimestamp }} seconds ago</span></div>
       <div class="flex flex-col text-center p-5 border justify-center">
         <a class="p-4 bg-blue-500 text-zinc-50 my-3 text-xl font-semibold" v-bind:href="`https://www.google.co.uk/maps/@${latitude},${longitude},17z`" target="_blank">Google Maps</a>
         <a class="p-4 bg-blue-500 text-zinc-50 my-3 text-xl font-semibold" v-bind:href="`https://www.openstreetmap.org/#map=17/${latitude}/${longitude}`" target="_blank">OpenStreetMap</a>
