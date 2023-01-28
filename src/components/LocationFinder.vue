@@ -156,12 +156,6 @@ export default {
         properties: {
           timestamp: this.timestamp,
           altitude: this.altitude,
-          heading: this.heading,
-          speed: this.speed,
-          accuracy: this.accuracy,
-          altitudeAccuracy: this.altitudeAccuracy,
-          locationAccuracy: this.locationAccuracy,
-          errorMessage: this.errorMessage
         }
       }
     },
