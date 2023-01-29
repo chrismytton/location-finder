@@ -40,17 +40,17 @@ export default {
     },
     copy(value) {
       if (!navigator.clipboard) {
-        this.displayConfirmation('Copy not supported', { background: 'bg-red-500' })
+        this.displayMessage('Copy not supported', { background: 'bg-red-500' })
         return
       }
       if (value === undefined || value === null || value === '' || value === '&nbsp;') {
-        this.displayConfirmation('Nothing to copy', { background: 'bg-red-500' })
+        this.displayMessage('Nothing to copy', { background: 'bg-red-500' })
         return
       }
       navigator.clipboard.writeText(value)
-      this.displayConfirmation()
+      this.displayMessage()
     },
-    displayConfirmation(message, { background = 'bg-green-500', duration = 2000 } = {}) {
+    displayMessage(message, { background = 'bg-green-500', duration = 2000 } = {}) {
       const el = document.createElement('div')
       el.classList.add(
         background,
