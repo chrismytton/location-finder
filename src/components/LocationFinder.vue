@@ -85,7 +85,18 @@ export default {
       if (!this.position) {
         return;
       }
-      return Math.ceil((this.now - this.timestamp.getTime()) / 1000)
+      const seconds = Math.ceil((this.now - this.timestamp.getTime()) / 1000)
+      if (seconds < 10) {
+        return 'Just now'
+      } else if (seconds < 60) {
+        return `${seconds} seconds ago`
+      } else if (seconds < 3600) {
+        return `${Math.floor(seconds / 60)} minutes ago`
+      } else if (seconds < 86400) {
+        return `${Math.floor(seconds / 3600)} hours ago`
+      } else {
+        return `${Math.floor(seconds / 86400)} days ago`
+      }
     },
     latitude() {
       if (!this.coords.latitude) {
@@ -229,7 +240,7 @@ export default {
         <a class="p-4 bg-blue-500 text-zinc-50 my-3 text-xl font-semibold" v-bind:href="`https://www.openstreetmap.org/#map=17/${latitude}/${longitude}`" target="_blank">OpenStreetMap</a>
         <a class="p-4 bg-blue-500 text-zinc-50 my-3 text-xl font-semibold" v-bind:href="`https://www.bing.com/maps?lvl=17&cp=${latitude}~${longitude}`" target="_blank">Bing</a>
       </div>
-      <div @click="copy(timestamp)" v-if="timestamp" class="flex flex-col text-center rounded-xl p-5 border justify-center"><span class="text-xl mb-3">Last updated</span> <span class="text-3xl" v-bind:title="timestamp">{{ relativeTimestamp }} seconds ago</span></div>
+      <div @click="copy(timestamp)" v-if="timestamp" class="flex flex-col text-center rounded-xl p-5 border justify-center"><span class="text-xl mb-3">Last updated</span> <span class="text-3xl" v-bind:title="timestamp">{{ relativeTimestamp }}</span></div>
     </div>
     <div v-else-if="locating" class="grid justify-center content-center h-screen text-3xl font-bold">
       Locating&hellip;
