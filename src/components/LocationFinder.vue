@@ -251,11 +251,11 @@ export default {
         <span class="text-xl text-center">GeoJSON</span>
         <pre class="overflow-x-scroll shadow-inner p-3">{{ geoJSON }}</pre>
       </div>
-      <div @click="copy(wktWithAltitude)" v-if="altitude" class="flex flex-col text-center rounded-xl p-5 border justify-center">
+      <div v-if="altitude" @click="copy(wktWithAltitude)" class="flex flex-col text-center rounded-xl p-5 border justify-center">
         <span class="text-xl mb-3">WKT</span>
         <pre class="overflow-x-scroll shadow-inner p-3">{{ wktWithAltitude }}</pre>
       </div>
-      <div @click="copy(wkt)" v-else class="flex flex-col text-center rounded-xl p-5 border justify-center">
+      <div v-else @click="copy(wkt)" class="flex flex-col text-center rounded-xl p-5 border justify-center">
         <span class="text-xl mb-3">WKT</span>
         <pre class="overflow-x-scroll shadow-inner p-3">{{ wkt }}</pre>
       </div>
