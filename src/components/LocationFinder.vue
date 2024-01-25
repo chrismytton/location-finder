@@ -119,7 +119,7 @@ export default {
     heading() {
       const { heading } = this.coords
       if (!heading) {
-        return '&nbsp;'
+        return
       }
 
       // Santiy check
@@ -218,7 +218,7 @@ export default {
 <template>
   <div class="m-5">
     <div v-if="position" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 min-w-0">
-      <div @click="copy(latitude)" class="flex flex-col gap-3 rounded-xl text-center p-5 border justify-center">
+      <div @click="copy(latitude)" v-if="latitude" class="flex flex-col gap-3 rounded-xl text-center p-5 border justify-center">
         <span class="text-xl">Latitude</span>
         <span class="text-3xl" v-bind:title="locationAccuracy">{{ latitude }}</span>
       </div>
@@ -231,7 +231,7 @@ export default {
         <span class="text-3xl">{{ altitude }} meters</span>
         <span>+-{{ altitudeAccuracy }} meters</span>
       </div>
-      <div @click="copy(heading)" class="flex flex-col gap-3 text-center rounded-xl p-5 border justify-center">
+      <div @click="copy(heading)" v-if="heading" class="flex flex-col gap-3 text-center rounded-xl p-5 border justify-center">
         <span class="text-xl">Heading</span>
         <span class="text-3xl" v-html="heading"></span>
       </div>
