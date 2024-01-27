@@ -104,11 +104,37 @@ export default {
       }
       return this.coords.latitude.toFixed(4);
     },
+    latitudeDMS() {
+      const { latitude } = this.coords
+      if (!latitude) {
+        return
+      }
+      const hemisphere = latitude >= 0 ? 'N' : 'S'
+      const absLatitude = Math.abs(latitude)
+      const degrees = Math.floor(absLatitude)
+      const minutes = Math.floor((absLatitude - degrees) * 60)
+      const seconds = Math.floor(((absLatitude - degrees) * 60 - minutes) * 60)
+
+      return `${degrees}° ${minutes}' ${seconds}" ${hemisphere}`
+    },
     longitude() {
       if (!this.coords.longitude) {
         return
       }
       return this.coords.longitude.toFixed(4);
+    },
+    longitudeDMS() {
+      const { longitude } = this.coords;
+      if (!longitude) {
+        return;
+      }
+      const hemisphere = longitude >= 0 ? 'E' : 'W';
+      const absLongitude = Math.abs(longitude);
+      const degrees = Math.floor(absLongitude);
+      const minutes = Math.floor((absLongitude - degrees) * 60);
+      const seconds = Math.floor(((absLongitude - degrees) * 60 - minutes) * 60);
+
+      return `${degrees}° ${minutes}' ${seconds}" ${hemisphere}`;
     },
     altitude() {
       if (!this.coords.altitude) {
@@ -221,10 +247,12 @@ export default {
       <div @click="copy(latitude)" v-if="latitude" class="flex flex-col gap-3 rounded-xl text-center p-5 border justify-center">
         <span class="text-xl">Latitude</span>
         <span class="text-3xl" v-bind:title="locationAccuracy">{{ latitude }}</span>
+        <span class="text-xl">{{ latitudeDMS }}</span>
       </div>
       <div @click="copy(longitude)" v-if="longitude" class="flex flex-col gap-3 rounded-xl text-center p-5 border justify-center">
         <span class="text-xl">Longitude</span>
         <span class="text-3xl" v-bind:title="locationAccuracy">{{ longitude }}</span>
+        <span class="text-xl">{{ longitudeDMS }}</span>
       </div>
       <div @click="copy(altitude)" v-if="altitude" class="flex flex-col gap-3 text-center rounded-xl p-5 border justify-center">
         <span class="text-xl">Altitude</span>
