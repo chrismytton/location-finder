@@ -142,7 +142,7 @@ export default {
       }
       return this.coords.altitude.toFixed(2);
     },
-    heading() {
+    headingDirection() {
       const { heading } = this.coords
       if (!heading) {
         return
@@ -170,6 +170,18 @@ export default {
       } else if (heading > 292.5 && heading <= 337.5) {
         return 'North-West'
       }
+    },
+    headingDegrees() {
+      if (!this.coords.heading) {
+        return
+      }
+      return this.coords.heading.toFixed(2)
+    },
+    heading() {
+      if (!this.coords.heading) {
+        return
+      }
+      return `${this.headingDirection} (${this.headingDegrees}°)`
     },
     speed() {
       if (!this.coords.speed) {
@@ -261,7 +273,8 @@ export default {
       </div>
       <div @click="copy(heading)" v-if="heading" class="flex flex-col gap-3 text-center rounded-xl p-5 border justify-center">
         <span class="text-xl">Heading</span>
-        <span class="text-3xl" v-html="heading"></span>
+        <span class="text-3xl">{{ heading }}</span>
+        <span class="text-xl">{{ headingDegrees }}°</span>
       </div>
       <div @click="copy(mph)" v-if="mph" class="flex flex-col gap-3 text-center rounded-xl p-5 border justify-center">
         <span class="text-xl">Miles per hour</span>
