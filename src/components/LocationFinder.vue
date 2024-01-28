@@ -181,7 +181,7 @@ export default {
       if (!this.coords.heading) {
         return
       }
-      return `${this.headingDirection} (${this.headingDegrees}°)`
+      return this.headingDirection
     },
     speed() {
       if (!this.coords.speed) {
