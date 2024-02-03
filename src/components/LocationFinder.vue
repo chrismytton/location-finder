@@ -270,7 +270,7 @@ export default {
       </div>
       <div @click="copy(heading)" class="flex flex-col gap-3 text-center rounded-xl p-5 border justify-center">
         <span class="text-xl">Heading</span>
-        <span class="text-3xl">{{ heading }}</span>
+        <span class="text-3xl" v-html="heading"></span>
         <span class="text-xl">{{ headingDegrees }}°</span>
       </div>
       <div @click="copy(mph)" v-if="mph" class="flex flex-col gap-3 text-center rounded-xl p-5 border justify-center">
