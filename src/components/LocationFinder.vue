@@ -178,9 +178,6 @@ export default {
       return this.coords.heading.toFixed(2)
     },
     heading() {
-      if (!this.coords.heading) {
-        return
-      }
       return this.headingDirection
     },
     speed() {
