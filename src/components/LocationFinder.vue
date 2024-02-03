@@ -173,9 +173,9 @@ export default {
     },
     headingDegrees() {
       if (!this.coords.heading) {
-        return
+        return "&nbsp;"
       }
-      return this.coords.heading.toFixed(2)
+      return `${this.coords.heading.toFixed(2)}°`
     },
     heading() {
       return this.headingDirection
@@ -271,7 +271,7 @@ export default {
       <div @click="copy(heading)" class="flex flex-col gap-3 text-center rounded-xl p-5 border justify-center">
         <span class="text-xl">Heading</span>
         <span class="text-3xl" v-html="heading"></span>
-        <span class="text-xl">{{ headingDegrees }}°</span>
+        <span class="text-xl" v-html="headingDegrees"></span>
       </div>
       <div @click="copy(mph)" v-if="mph" class="flex flex-col gap-3 text-center rounded-xl p-5 border justify-center">
         <span class="text-xl">Miles per hour</span>
