@@ -228,9 +228,10 @@ export default {
       }
       return {
         type: "Feature",
+        properties: {},
         geometry: {
           type: "Point",
-          coordinates: [this.longitude, this.latitude]
+          coordinates: [parseFloat(this.longitude), parseFloat(this.latitude)]
         }
       }
     },
