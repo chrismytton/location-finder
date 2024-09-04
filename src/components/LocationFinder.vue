@@ -15,6 +15,12 @@ export default {
     setInterval(() => {
       this.now = Date.now()
     }, 1000)
+
+    // Check if the user has previously allowed location
+    const locationAllowed = localStorage.getItem('locationAllowed');
+    if (locationAllowed === 'true') {
+      this.startTracking();
+    }
   },
   methods: {
 
@@ -29,6 +35,7 @@ export default {
     },
     startTracking() {
       this.locating = true
+      this.saveLocationPreference()
       if (this.watchID) {
         navigator.geolocation.clearWatch(this.watchID)
       }
@@ -72,6 +79,9 @@ export default {
       setTimeout(() => {
         document.body.removeChild(el)
       }, duration)
+    },
+    saveLocationPreference() {
+      localStorage.setItem('locationAllowed', 'true');
     },
   },
   computed: {
