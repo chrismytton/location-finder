@@ -2,28 +2,16 @@
 
 Get your current latitude, longitude and altitude. Uses the Geolocation API to display a readout of your current position and renders it on a minimal webpage.
 
-## Recommended IDE Setup
+## Development
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+Serve the `public/` directory with any static file server:
 
 ```sh
-npm install
+python -m http.server -d public
 ```
 
-### Compile and Hot-Reload for Development
+Then open http://localhost:8000.
 
-```sh
-npm run dev
-```
+## Deployment
 
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+The site is deployed to GitHub Pages automatically on push to `master`. No build step is needed — the contents of `public/` are uploaded directly.

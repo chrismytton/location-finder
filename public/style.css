@@ -1,0 +1,152 @@
+:root {
+  --color-bg: #fafafa;
+  --color-text: #27272a;
+  --color-border: #d4d4d8;
+  --color-blue: #3b82f6;
+  --color-green: #22c55e;
+  --color-red: #ef4444;
+  --color-muted: #71717a;
+  --color-shadow: rgba(0, 0, 0, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #27272a;
+    --color-text: #fafafa;
+    --color-border: #52525b;
+    --color-shadow: rgba(0, 0, 0, 0.2);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+body {
+  padding: 1.25rem;
+}
+
+/* -- Grid layout -- */
+
+.card-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .card-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+  .card-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1536px) {
+  .card-grid { grid-template-columns: repeat(5, 1fr); }
+}
+
+/* -- Card -- */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-align: center;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.card-label {
+  font-size: 1.25rem;
+}
+
+.card-value {
+  font-size: 1.875rem;
+}
+
+.card-sub {
+  font-size: 1.25rem;
+}
+
+/* -- Pre/code blocks inside cards -- */
+
+.card pre {
+  overflow-x: auto;
+  padding: 0.75rem;
+  box-shadow: inset 0 2px 4px var(--color-shadow);
+  text-align: left;
+  white-space: pre;
+}
+
+/* -- Map buttons -- */
+
+.map-link {
+  display: block;
+  padding: 1rem;
+  margin: 0.75rem 0;
+  background: var(--color-blue);
+  color: #fafafa;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+}
+
+/* -- Centred screens (locating, error, start) -- */
+
+.center-screen {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  height: 100vh;
+}
+
+.center-screen--text {
+  font-size: 1.875rem;
+  font-weight: 700;
+}
+
+.btn-primary {
+  background: var(--color-blue);
+  color: #fafafa;
+  border: none;
+  padding: 1rem;
+  font-weight: 600;
+  font-size: 1.5rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* -- Toast -- */
+
+.toast {
+  position: fixed;
+  top: 0.75rem;
+  left: 25%;
+  width: 50%;
+  color: #fff;
+  text-align: center;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  z-index: 50;
+}
+
+.toast--success { background: var(--color-green); }
+.toast--error { background: var(--color-red); }
+
+/* -- Hidden utility -- */
+
+.hidden { display: none !important; }

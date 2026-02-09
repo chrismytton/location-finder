@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location finder</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+
+    <!-- Position data grid -->
+    <div id="view-position" class="card-grid hidden">
+      <div id="card-lat" class="card">
+        <span class="card-label">Latitude</span>
+        <span class="card-value" id="lat-value"></span>
+        <span class="card-sub" id="lat-dms"></span>
+      </div>
+      <div id="card-lng" class="card">
+        <span class="card-label">Longitude</span>
+        <span class="card-value" id="lng-value"></span>
+        <span class="card-sub" id="lng-dms"></span>
+      </div>
+      <div id="card-altitude" class="card hidden">
+        <span class="card-label">Altitude</span>
+        <span class="card-value" id="alt-value"></span>
+        <span id="alt-accuracy"></span>
+      </div>
+      <div id="card-heading" class="card">
+        <span class="card-label">Heading</span>
+        <span class="card-value" id="heading-value"></span>
+        <span class="card-sub" id="heading-deg"></span>
+      </div>
+      <div id="card-mph" class="card">
+        <span class="card-label">Miles per hour</span>
+        <span class="card-value" id="mph-value"></span>
+      </div>
+      <div id="card-kph" class="card">
+        <span class="card-label">Kilometers per hour</span>
+        <span class="card-value" id="kph-value"></span>
+      </div>
+      <div id="card-ms" class="card">
+        <span class="card-label">Meters per second</span>
+        <span class="card-value" id="ms-value"></span>
+      </div>
+      <div id="card-geojson" class="card">
+        <span class="card-label">GeoJSON</span>
+        <pre id="geojson-pre"></pre>
+      </div>
+      <div id="card-wkt" class="card">
+        <span class="card-label">WKT</span>
+        <pre id="wkt-pre"></pre>
+      </div>
+      <div class="card" style="cursor: default;">
+        <span class="card-label">Maps</span>
+        <a id="link-google" class="map-link" target="_blank">Google Maps</a>
+        <a id="link-osm" class="map-link" target="_blank">OpenStreetMap</a>
+        <a id="link-bing" class="map-link" target="_blank">Bing</a>
+      </div>
+      <div id="card-updated" class="card">
+        <span class="card-label">Last updated</span>
+        <span class="card-value" id="updated-value"></span>
+      </div>
+    </div>
+
+    <!-- Locating screen -->
+    <div id="view-locating" class="center-screen hidden">
+      <span class="center-screen--text">Locating&hellip;</span>
+    </div>
+
+    <!-- Error screen -->
+    <div id="view-error" class="hidden">
+      <span id="error-message"></span>
+    </div>
+
+    <!-- Start screen -->
+    <div id="view-start" class="center-screen">
+      <button id="btn-start" class="btn-primary">Use my location</button>
+    </div>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
