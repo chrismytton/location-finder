@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Location finder</title>
     <link rel="stylesheet" href="style.css">
+    <script type="module" src="app.js"></script>
   </head>
   <body>
 
@@ -32,15 +33,15 @@
         <span class="card-sub" id="heading-deg"></span>
       </div>
       <div id="card-mph" class="card">
-        <span class="card-label">Miles per hour</span>
+        <span class="card-label">Speed (mph)</span>
         <span class="card-value" id="mph-value"></span>
       </div>
       <div id="card-kph" class="card">
-        <span class="card-label">Kilometers per hour</span>
+        <span class="card-label">Speed (km/h)</span>
         <span class="card-value" id="kph-value"></span>
       </div>
       <div id="card-ms" class="card">
-        <span class="card-label">Meters per second</span>
+        <span class="card-label">Speed (m/s)</span>
         <span class="card-value" id="ms-value"></span>
       </div>
       <div id="card-geojson" class="card">
@@ -51,11 +52,11 @@
         <span class="card-label">WKT</span>
         <pre id="wkt-pre"></pre>
       </div>
-      <div class="card" style="cursor: default;">
-        <span class="card-label">Maps</span>
-        <a id="link-google" class="map-link" target="_blank">Google Maps</a>
-        <a id="link-osm" class="map-link" target="_blank">OpenStreetMap</a>
-        <a id="link-bing" class="map-link" target="_blank">Bing</a>
+      <div class="card" style="cursor: default; gap: 0.5rem;">
+        <span class="card-label">Open in</span>
+        <a id="link-google" class="map-link" target="_blank" rel="noopener">Google Maps</a>
+        <a id="link-osm" class="map-link" target="_blank" rel="noopener">OpenStreetMap</a>
+        <a id="link-bing" class="map-link" target="_blank" rel="noopener">Bing Maps</a>
       </div>
       <div id="card-updated" class="card">
         <span class="card-label">Last updated</span>
@@ -77,7 +78,5 @@
     <div id="view-start" class="center-screen">
       <button id="btn-start" class="btn-primary">Use my location</button>
     </div>
-
-    <script type="module" src="app.js"></script>
   </body>
 </html>
