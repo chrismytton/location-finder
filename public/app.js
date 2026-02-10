@@ -27,6 +27,8 @@ function formatCoords(coords) {
 
 function formatAltitude(coords) {
   if (coords.altitude == null) return null
+  // Desktops often report altitude as 0 with no accuracy — ignore this
+  if (coords.altitude === 0 && coords.altitudeAccuracy == null) return null
   return {
     value: coords.altitude.toFixed(2),
     accuracy: coords.altitudeAccuracy != null ? coords.altitudeAccuracy.toFixed(2) : null,
