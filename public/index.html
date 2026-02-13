@@ -5,62 +5,74 @@
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Location finder</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="style.css">
     <script type="module" src="app.js"></script>
   </head>
   <body>
 
-    <!-- Position data grid -->
-    <div id="view-position" class="card-grid hidden">
-      <div id="card-lat" class="card">
-        <span class="card-label">Latitude</span>
-        <span class="card-value" id="lat-value"></span>
-        <span class="card-sub" id="lat-dms"></span>
+    <!-- Position data -->
+    <div id="view-position" class="layout hidden">
+      <div id="map" class="map-container"></div>
+
+      <div id="card-coords" class="card card--interactive">
+        <span class="card-label">Coordinates</span>
+        <span class="card-value" id="coords-value"></span>
+        <span class="card-sub" id="coords-dms"></span>
+        <span class="card-sub card-sub--subtle" id="coords-accuracy"></span>
       </div>
-      <div id="card-lng" class="card">
-        <span class="card-label">Longitude</span>
-        <span class="card-value" id="lng-value"></span>
-        <span class="card-sub" id="lng-dms"></span>
+
+      <div id="card-speed" class="card card--interactive">
+        <span class="card-label">Speed</span>
+        <span class="card-value" id="speed-value"></span>
+        <span class="card-sub" id="speed-hint">Tap to change units</span>
       </div>
-      <div id="card-altitude" class="card hidden">
-        <span class="card-label">Altitude</span>
-        <span class="card-value" id="alt-value"></span>
-        <span id="alt-accuracy"></span>
-      </div>
-      <div id="card-heading" class="card">
+
+      <div id="card-heading" class="card hidden">
         <span class="card-label">Heading</span>
         <span class="card-value" id="heading-value"></span>
         <span class="card-sub" id="heading-deg"></span>
       </div>
-      <div id="card-mph" class="card">
-        <span class="card-label">Speed (mph)</span>
-        <span class="card-value" id="mph-value"></span>
+
+      <div id="card-altitude" class="card hidden">
+        <span class="card-label">Altitude</span>
+        <span class="card-value" id="alt-value"></span>
+        <span class="card-sub" id="alt-accuracy"></span>
       </div>
-      <div id="card-kph" class="card">
-        <span class="card-label">Speed (km/h)</span>
-        <span class="card-value" id="kph-value"></span>
+
+      <div class="map-links">
+        <a id="link-google" target="_blank" rel="noopener">Google Maps</a>
+        <span class="map-links-sep">&middot;</span>
+        <a id="link-osm" target="_blank" rel="noopener">OpenStreetMap</a>
+        <span class="map-links-sep">&middot;</span>
+        <a id="link-geohack" target="_blank" rel="noopener">GeoHack</a>
       </div>
-      <div id="card-ms" class="card">
-        <span class="card-label">Speed (m/s)</span>
-        <span class="card-value" id="ms-value"></span>
-      </div>
-      <div id="card-geojson" class="card">
-        <span class="card-label">GeoJSON</span>
-        <pre id="geojson-pre"></pre>
-      </div>
-      <div id="card-wkt" class="card">
-        <span class="card-label">WKT</span>
-        <pre id="wkt-pre"></pre>
-      </div>
-      <div class="card" style="cursor: default; gap: 0.5rem;">
-        <span class="card-label">Open in</span>
-        <a id="link-google" class="map-link" target="_blank" rel="noopener">Google Maps</a>
-        <a id="link-osm" class="map-link" target="_blank" rel="noopener">OpenStreetMap</a>
-        <a id="link-bing" class="map-link" target="_blank" rel="noopener">Bing Maps</a>
-      </div>
-      <div id="card-updated" class="card">
-        <span class="card-label">Last updated</span>
-        <span class="card-value" id="updated-value"></span>
+
+      <details id="dev-section" class="dev-section">
+        <summary>Developer</summary>
+        <div class="dev-block">
+          <div class="dev-block-header">
+            <span class="card-label">GeoJSON</span>
+            <button class="btn-copy" id="btn-copy-geojson" title="Copy GeoJSON">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+          <pre id="geojson-pre"></pre>
+        </div>
+        <div class="dev-block">
+          <div class="dev-block-header">
+            <span class="card-label">WKT</span>
+            <button class="btn-copy" id="btn-copy-wkt" title="Copy WKT">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+          <pre id="wkt-pre"></pre>
+        </div>
+      </details>
+
+      <div id="updated-footer" class="updated-footer">
+        <span id="updated-value"></span>
       </div>
     </div>
 

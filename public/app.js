@@ -4,6 +4,7 @@ import { toDMS, headingDirection, relativeTime, toGeoJSON, toWKT } from './geo.j
 const MS_TO_MPH = 2.237
 const MS_TO_KPH = 3.6
 const MAP_ZOOM = 17
+const SPEED_UNITS = ['mph', 'km/h', 'm/s']
 
 const $ = (id) => document.getElementById(id)
 
@@ -14,10 +15,12 @@ const state = {
   locating: false,
   watchID: null,
   now: Date.now(),
+  speedUnit: localStorage.getItem('speedUnit') || 'mph',
+  map: null,
+  marker: null,
 }
 
 // --- Formatting helpers ---
-// Single source of truth for how values are displayed and copied.
 function formatCoords(coords) {
   return {
     lat: coords.latitude.toFixed(4),
@@ -35,12 +38,35 @@ function formatAltitude(coords) {
   }
 }
 
-function formatSpeed(speed) {
-  return {
-    mph: speed ? (speed * MS_TO_MPH).toFixed(1) : '0',
-    kph: speed ? (speed * MS_TO_KPH).toFixed(1) : '0',
-    ms: speed ? speed.toFixed(1) : '0',
+function formatSpeed(speed, unit) {
+  if (!speed) return { value: '0', label: unit }
+  switch (unit) {
+    case 'km/h': return { value: (speed * MS_TO_KPH).toFixed(1), label: 'km/h' }
+    case 'm/s': return { value: speed.toFixed(1), label: 'm/s' }
+    default: return { value: (speed * MS_TO_MPH).toFixed(1), label: 'mph' }
   }
+}
+
+// --- Map ---
+function initMap(lat, lng) {
+  if (state.map) return
+  state.map = L.map('map', {
+    zoomControl: false,
+    attributionControl: false,
+  }).setView([lat, lng], MAP_ZOOM)
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+  }).addTo(state.map)
+  state.marker = L.marker([lat, lng]).addTo(state.map)
+}
+
+function updateMap(lat, lng) {
+  if (!state.map) {
+    initMap(lat, lng)
+    return
+  }
+  state.marker.setLatLng([lat, lng])
+  state.map.setView([lat, lng])
 }
 
 // --- Render ---
@@ -63,41 +89,48 @@ function renderPosition() {
 
   const { lat, lng } = formatCoords(coords)
   const alt = formatAltitude(coords)
-  const speed = formatSpeed(coords.speed)
+  const speed = formatSpeed(coords.speed, state.speedUnit)
   const heading = coords.heading
   const accuracy = coords.accuracy != null ? coords.accuracy.toFixed(2) : null
 
-  $('lat-value').textContent = lat
-  $('lat-dms').textContent = toDMS(coords.latitude, true)
-  $('lng-value').textContent = lng
-  $('lng-dms').textContent = toDMS(coords.longitude, false)
+  // Coordinates
+  $('coords-value').textContent = `${lat}, ${lng}`
+  $('coords-dms').textContent = `${toDMS(coords.latitude, true)}  ${toDMS(coords.longitude, false)}`
+  $('coords-accuracy').textContent = accuracy ? `\u00B1 ${accuracy} m` : ''
 
-  const accuracyStr = accuracy ? `+- ${accuracy} meters` : ''
-  $('lat-value').title = accuracyStr
-  $('lng-value').title = accuracyStr
+  // Speed
+  $('speed-value').textContent = `${speed.value} ${speed.label}`
 
-  $('card-altitude').classList.toggle('hidden', !alt)
-  if (alt) {
-    $('alt-value').textContent = `${alt.value} meters`
-    $('alt-accuracy').textContent = alt.accuracy ? `+-${alt.accuracy} meters` : ''
+  // Heading — hide card entirely when null
+  const hasHeading = heading != null
+  $('card-heading').classList.toggle('hidden', !hasHeading)
+  if (hasHeading) {
+    $('heading-value').textContent = headingDirection(heading)
+    $('heading-deg').textContent = `${heading.toFixed(2)}\u00B0`
   }
 
-  $('heading-value').textContent = headingDirection(heading) || '\u00A0'
-  $('heading-deg').innerHTML = heading != null ? `${heading.toFixed(2)}\u00B0` : '\u00A0'
+  // Altitude
+  $('card-altitude').classList.toggle('hidden', !alt)
+  if (alt) {
+    $('alt-value').textContent = `${alt.value} m`
+    $('alt-accuracy').textContent = alt.accuracy ? `\u00B1 ${alt.accuracy} m` : ''
+  }
 
-  $('mph-value').textContent = `${speed.mph} mph`
-  $('kph-value').textContent = `${speed.kph} km/h`
-  $('ms-value').textContent = `${speed.ms} m/s`
+  // Map links
+  $('link-google').href = `https://www.google.co.uk/maps/@${lat},${lng},${MAP_ZOOM}z`
+  $('link-osm').href = `https://www.openstreetmap.org/#map=${MAP_ZOOM}/${lat}/${lng}`
+  $('link-geohack').href = `https://geohack.toolforge.org/geohack.php?params=${lat};${lng}_type:landmark`
 
+  // Developer data
   $('geojson-pre').textContent = JSON.stringify(toGeoJSON(lat, lng), null, 2)
   $('wkt-pre').textContent = toWKT(lat, lng, alt?.value ?? null)
 
-  $('link-google').href = `https://www.google.co.uk/maps/@${lat},${lng},${MAP_ZOOM}z`
-  $('link-osm').href = `https://www.openstreetmap.org/#map=${MAP_ZOOM}/${lat}/${lng}`
-  $('link-bing').href = `https://www.bing.com/maps?lvl=${MAP_ZOOM}&cp=${lat}~${lng}`
-
+  // Last updated
   $('updated-value').textContent = relativeTime(state.position.timestamp, state.now)
   $('updated-value').title = new Date(state.position.timestamp).toString()
+
+  // Map
+  updateMap(coords.latitude, coords.longitude)
 }
 
 function render() {
@@ -129,44 +162,31 @@ function copyToClipboard(value) {
 }
 
 // --- Click handlers ---
-function bindCardClicks() {
-  const cards = {
-    'card-lat': () => state.position && formatCoords(state.position.coords).lat,
-    'card-lng': () => state.position && formatCoords(state.position.coords).lng,
-    'card-altitude': () => formatAltitude(state.position?.coords)?.value,
-    'card-heading': () => headingDirection(state.position?.coords?.heading) || null,
-    'card-mph': () => {
-      const speed = formatSpeed(state.position?.coords?.speed)
-      return speed.mph
-    },
-    'card-kph': () => {
-      const speed = formatSpeed(state.position?.coords?.speed)
-      return speed.kph
-    },
-    'card-ms': () => {
-      const speed = formatSpeed(state.position?.coords?.speed)
-      return speed.ms
-    },
-    'card-geojson': () => {
-      if (!state.position) return null
-      const { lat, lng } = formatCoords(state.position.coords)
-      return JSON.stringify(toGeoJSON(lat, lng), null, 2)
-    },
-    'card-wkt': () => {
-      if (!state.position) return null
-      const { lat, lng } = formatCoords(state.position.coords)
-      const alt = formatAltitude(state.position.coords)
-      return toWKT(lat, lng, alt?.value ?? null)
-    },
-    'card-updated': () => {
-      if (!state.position) return null
-      return new Date(state.position.timestamp).toString()
-    },
-  }
+function bindClicks() {
+  // Coordinates — click to copy
+  $('card-coords').addEventListener('click', () => {
+    if (!state.position) return
+    const { lat, lng } = formatCoords(state.position.coords)
+    copyToClipboard(`${lat}, ${lng}`)
+  })
 
-  for (const [id, getValue] of Object.entries(cards)) {
-    $(id).addEventListener('click', () => copyToClipboard(getValue()))
-  }
+  // Speed — click to cycle units
+  $('card-speed').addEventListener('click', () => {
+    const idx = SPEED_UNITS.indexOf(state.speedUnit)
+    state.speedUnit = SPEED_UNITS[(idx + 1) % SPEED_UNITS.length]
+    localStorage.setItem('speedUnit', state.speedUnit)
+    renderPosition()
+  })
+
+  // Dev section copy buttons
+  $('btn-copy-geojson').addEventListener('click', (e) => {
+    e.stopPropagation()
+    copyToClipboard($('geojson-pre').textContent)
+  })
+  $('btn-copy-wkt').addEventListener('click', (e) => {
+    e.stopPropagation()
+    copyToClipboard($('wkt-pre').textContent)
+  })
 }
 
 // --- Geolocation ---
@@ -195,7 +215,7 @@ function startTracking() {
 
 // --- Init ---
 function init() {
-  bindCardClicks()
+  bindClicks()
   $('btn-start').addEventListener('click', startTracking)
 
   setInterval(() => {
