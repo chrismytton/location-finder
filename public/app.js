@@ -48,6 +48,26 @@ function formatSpeed(speed, unit) {
 }
 
 // --- Map ---
+function loadLeaflet() {
+  if (state.leafletLoaded) return state.leafletLoaded
+  state.leafletLoaded = new Promise((resolve) => {
+    const link = document.createElement('link')
+    link.rel = 'stylesheet'
+    link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
+    link.integrity = 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY='
+    link.crossOrigin = ''
+    document.head.appendChild(link)
+
+    const script = document.createElement('script')
+    script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'
+    script.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo='
+    script.crossOrigin = ''
+    script.onload = resolve
+    document.head.appendChild(script)
+  })
+  return state.leafletLoaded
+}
+
 function initMap(lat, lng) {
   if (state.map) return
   state.map = L.map('map', {
@@ -61,12 +81,24 @@ function initMap(lat, lng) {
 }
 
 function updateMap(lat, lng) {
+  if (!state.mapVisible) return
   if (!state.map) {
     initMap(lat, lng)
     return
   }
   state.marker.setLatLng([lat, lng])
   state.map.setView([lat, lng])
+}
+
+async function showMap() {
+  state.mapVisible = true
+  $('btn-show-map').classList.add('hidden')
+  $('map').classList.remove('hidden')
+  await loadLeaflet()
+  if (state.position) {
+    const { latitude, longitude } = state.position.coords
+    initMap(latitude, longitude)
+  }
 }
 
 // --- Render ---
@@ -177,6 +209,9 @@ function bindClicks() {
     localStorage.setItem('speedUnit', state.speedUnit)
     renderPosition()
   })
+
+  // Map — show on demand
+  $('btn-show-map').addEventListener('click', showMap)
 
   // Dev section copy buttons
   $('btn-copy-geojson').addEventListener('click', (e) => {

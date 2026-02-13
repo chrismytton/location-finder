@@ -3,10 +3,8 @@
   <head>
     <meta charset="UTF-8">
     <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Location finder</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1/dist/leaflet.css">
-    <script src="https://unpkg.com/leaflet@1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="style.css">
     <script type="module" src="app.js"></script>
   </head>
@@ -14,7 +12,10 @@
 
     <!-- Position data -->
     <div id="view-position" class="layout hidden">
-      <div id="map" class="map-container"></div>
+      <div id="map-wrapper">
+        <button id="btn-show-map" class="btn-show-map">Show map</button>
+        <div id="map" class="map-container hidden"></div>
+      </div>
 
       <div id="card-coords" class="card card--interactive">
         <span class="card-label">Coordinates</span>
@@ -72,7 +73,7 @@
       </details>
 
       <div id="updated-footer" class="updated-footer">
-        <span id="updated-value"></span>
+        Last updated <span id="updated-value"></span>
       </div>
     </div>
 
